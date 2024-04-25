@@ -46,7 +46,7 @@ $$  \Leftrightarrow \frac{\tau^2}{4}=\frac{2\tau w_B'}{4}+\frac{w_B^2}{4}-\frac{
 $$ \Leftrightarrow \tau^2-2w_B'\tau+w_B(2w_B-w_B')=0$$
 
 The roots of this quadratic equation are:
-$$\tau=w_B' \pm (w_B'-w_B)=\begin{cases}w_B'-w_B>w_B'\\w_B \end{cases}$$
+$$\tau=w_B' \pm (w_B'-w_B)=\begin{cases}2w_B'-w_B>w_B'\\w_B \end{cases}$$
 Only the smaller (second) root is admissible in this third case, so that $\tilde{\pi}_{AB}^*=\pi_{AB}^m$ whenever $w_{AB}=w_B'+w_B$.
 
 # Simulation
