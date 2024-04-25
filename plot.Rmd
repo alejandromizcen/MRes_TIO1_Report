@@ -1,0 +1,156 @@
+---
+title: "Loss Leading as an Exploitative Practice"
+subtitle: "*(Chen and Rey 2012)*"
+author: "Alejandro Mizrahi"
+date: "2024-04-09"
+output: pdf_document
+---
+
+This document describes the steps to generate Figure 1.
+
+# Analytical Solutions 
+
+## Baseline
+
+In the baseline, the firm L has monopoly power over A and B. This is derived in the main text:
+
+$$\pi_{AB}^m=\frac{w_{AB}^2}{4}$$
+
+## Case (i): $w_{AB}<w_B'$
+
+In this scenario, as discussed in the main text, firm L exploits its monopoly power over A. Since $w_B'>w_A$, a subset of consumers who purchase B from firm S will also purchase A from L. If firm L applies zero margin, $r_A=0$, then the share of consumers is $\min\{ w_B'/2, w_A\}$. Let us consider the two cases:
+
+- If $w_A<w_B'/2$, then demand is $w_A-r_A$. Profits are:
+$$\pi_A^m:=\max_{r_A}r_A(w_A-r_A)$$
+
+- If $w_A\geq w_B'/2$, then demand at zero margin is $w_B'/2$. The optimal margin is at least $w_A-w_B'/2$, because it does not reduce demand until this level. Profits are:
+$$\pi_A^m:=r_A(w_A-[r_A-(w_A-w_B'/2)])=r_A(w_A-r_A)$$
+
+From the FOC, $r_A^m=w_A/2$, so that $\pi_A^m=w_A^2/4$.
+
+## Case (ii): $2w_B' \leq w_{AB}$
+
+As derived in the main text:
+$$\pi_{AB}^*=\pi_{AB}^m + \frac{(c_B-c_B')^2}{4}>\pi_{AB}^m$$
+
+## Case (iii): $w_B'\leq w_{AB}<2w_B'$
+
+As derived in the main text:
+$$\tilde{\pi}_{AB}^*=(w_{AB}-w_B')w_B' + \frac{(c_B-c_B')^2}{4}$$
+
+Since profits are increasing in $w_{AB}$, conceptually consider that $u_A$ increases *ceteris paribus*, we know that there is a level $w_{AB}$ such that profits match the baseline level $\pi_{AB}^m$. This occurs when $w_{AB}=w_B'+w_B$, graphically, at the point where the two lines cross. To derive this midpoint, consider that $w_{AB}=w_B'+\tau, \tau \in [0,w_B']$. Then, equating both profits:
+$$\pi_{AB}^m=\tilde{\pi}_{AB}^* \Leftrightarrow \frac{w_{AB}^2}{4}=(w_{AB}-w_B')w_B'+\frac{(w_B'-w_B)^2}{4}$$
+$$ \Leftrightarrow \frac{(w_{B}'+\tau)^2}{4}=\tau w_B'+\frac{(w_B'-w_B)^2}{4}$$
+$$ \Leftrightarrow  \frac{\tau^2}{4}+\frac{2\tau w_B'}{4}=\tau w_B'+\frac{w_B^2}{4}-\frac{2w_B' w_B}{4}$$
+$$  \Leftrightarrow \frac{\tau^2}{4}=\frac{2\tau w_B'}{4}+\frac{w_B^2}{4}-\frac{2w_B' w_B}{4}$$
+$$ \Leftrightarrow \tau^2-2w_B'\tau+w_B(2w_B-w_B')=0$$
+
+The roots of this quadratic equation are:
+$$\tau=w_B' \pm (w_B'-w_B)=\begin{cases}w_B'-w_B>w_B'\\w_B \end{cases}$$
+Only the smaller (second) root is admissible in this third case, so that $\tilde{\pi}_{AB}^*=\pi_{AB}^m$ whenever $w_{AB}=w_B'+w_B$.
+
+# Simulation
+
+Parameters:
+
+```{r}
+cA <- 0 
+cB.p <- 0 
+uA.0 <- 1 
+uA.1 <- 5 # st. uA.1>2*uB
+uB <- 2 # st. uA.0 < uB < uA.1
+min.wB <- .5 # 0<wB<uB
+```
+
+Vectors:
+
+```{r}
+cB.seq <- seq(from=cB.p,to=uB-min.wB,by=.02)
+uA.seq <- seq(from=uA.0,to=uA.1,by=.02)
+cB <- c(rep(uB-min.wB,length(uA.seq)),rev(cB.seq))
+uA <- c(uA.seq,rep(uA.1,length(cB.seq)))
+
+wA <- uA - cA
+wB.p <- uB - cB.p
+wB <- uB - cB
+wAB <- wA + wB
+```
+
+Profit functions:
+
+```{r}
+piA.m <- ifelse(wAB<=wB.p,(wA^2)/4,NA)
+piAB.m <- (wAB^2)/4
+piAB.star <- ifelse(wAB>=2*wB.p, piAB.m + (cB-cB.p)^2/4,NA)
+piAB.tilde <- ifelse(wAB>=wB.p & wAB<=2*wB.p, (wAB-wB.p)*wB.p + (cB-cB.p)^2/4,NA)
+```
+
+Raw plot:
+
+```{r, fig.length=15,fig.width=6}
+ymax <- max(piAB.star,na.rm=T)
+
+# case 1
+plot(wAB,piA.m,xlim=c(min(wAB),max(wAB)),ylim=c(0,ymax),ty="l")
+# case 2
+lines(wAB,piAB.star)
+# case 3
+lines(wAB,piAB.tilde)
+# baseline
+lines(wAB,piAB.m,lty=2)
+# thresholds
+abline(v=wB.p,lty=2,col="red")
+abline(v=2*wB.p,lty=2,col="red")
+```
+
+Adjusted plot:
+
+```{r, fig.length=15,fig.width=6}
+plot(wAB,piA.m,xlim=c(min(wAB),4.5),ylim=c(0,6),ty="l",ylab="profits",
+     #xaxt="n",yaxt="n"
+     )
+# case 2
+lines(wAB,piAB.star)
+# case 3
+lines(wAB,piAB.tilde)
+# baseline
+lines(wAB,piAB.m,lty=3)
+# cases
+abline(v=wB.p,lty=3,col="red")
+abline(v=2*wB.p,lty=3,col="red")
+# legend
+legend("top", legend="baseline", lty=3,cex=.7)
+text(1.75, 3.5, " Case (i)",cex=.7)
+text(1.75, 3, "wAB<wB'",cex=.7)
+text(4.3, 3.5, " Case (ii)",cex=.7)
+text(4.3, 3, "wB'<wAB<2wB'",cex=.7)
+text(2.5, 3.5, " Case (iii)",cex=.7)
+text(2.5, 3, "2wB<2wAB'",cex=.7)
+```
+
+```{r,results=F,echo=F}
+# save plot
+pdf(file="fig1.pdf",
+width=8, height=6)
+  plot(wAB,piA.m,xlim=c(min(wAB),4.5),ylim=c(0,6),ty="l",ylab="profits",
+       #xaxt="n",yaxt="n"
+       )
+  # case 2
+  lines(wAB,piAB.star)
+  # case 3
+  lines(wAB,piAB.tilde)
+  # baseline
+  lines(wAB,piAB.m,lty=3)
+  # cases
+  abline(v=wB.p,lty=3,col="red")
+  abline(v=2*wB.p,lty=3,col="red")
+  # legend
+  legend("top", legend="baseline", lty=3,cex=1)
+  text(1.75, 3.5, " Case (i)",cex=1)
+  text(1.75, 3, "wAB<wB'",cex=1)
+  text(4.3, 3.5, " Case (ii)",cex=1)
+  text(4.3, 3, "2wB'<wAB",cex=1)
+  text(2.5, 3.5, " Case (iii)",cex=1)
+  text(2.5, 3, "wB'<wAB<2wB'",cex=1)
+dev.off()
+```
