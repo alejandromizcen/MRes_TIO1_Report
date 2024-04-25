@@ -38,7 +38,7 @@ $$\pi_{AB}^*=\pi_{AB}^m + \frac{(c_B-c_B')^2}{4}>\pi_{AB}^m$$
 As derived in the main text:
 $$\tilde{\pi}_{AB}^*=(w_{AB}-w_B')w_B' + \frac{(c_B-c_B')^2}{4}$$
 
-Since profits are increasing in $w_{AB}$, conceptually consider that $u_A$ increases *ceteris paribus*, we know that there is a level $w_{AB}$ such that profits match the baseline level $\pi_{AB}^m$. This occurs when $w_{AB}=w_B'+w_B$, graphically, at the point where the two lines cross. To derive this midpoint, consider that $w_{AB}=w_B'+\tau, \tau \in [0,w_B']$. Then, equating both profits:
+Since profits are increasing in $w_{AB}$, conceptually consider that $u_A$ increases *ceteris paribus*, we know that there is a level $w_{AB}$ such that profits match the baseline level $\pi_{AB}^m$. This occurs when $w_{AB}=w_B'+w_B$, graphically, at the point where the two lines cross. To derive this midpoint, consider that $w_{AB}=w_B'+\tau, \tau \in [0,w_B')$. Then, equating both profits:
 $$\pi_{AB}^m=\tilde{\pi}_{AB}^* \Leftrightarrow \frac{w_{AB}^2}{4}=(w_{AB}-w_B')w_B'+\frac{(w_B'-w_B)^2}{4}$$
 $$ \Leftrightarrow \frac{(w_{B}'+\tau)^2}{4}=\tau w_B'+\frac{(w_B'-w_B)^2}{4}$$
 $$ \Leftrightarrow  \frac{\tau^2}{4}+\frac{2\tau w_B'}{4}=\tau w_B'+\frac{w_B^2}{4}-\frac{2w_B' w_B}{4}$$
