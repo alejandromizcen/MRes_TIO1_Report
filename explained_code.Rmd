@@ -123,9 +123,9 @@ legend("top", legend="baseline", lty=3,cex=.7)
 text(1.75, 3.5, " Case (i)",cex=.7)
 text(1.75, 3, "wAB<wB'",cex=.7)
 text(4.3, 3.5, " Case (ii)",cex=.7)
-text(4.3, 3, "wB'<wAB<2wB'",cex=.7)
+text(4.3, 3, "2wB'<wAB",cex=.7)
 text(2.5, 3.5, " Case (iii)",cex=.7)
-text(2.5, 3, "2wB<2wAB'",cex=.7)
+text(2.5, 3, "wB'<wAB<2wB'",cex=.7)
 ```
 
 ```{r,results=F,echo=F}
